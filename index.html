@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>V&M Studio — задание</title>
+<style>
+  :root{
+    --bg:#0a0c10; --panel:#12151c; --panel2:#171b24;
+    --line:#262c38; --text:#e6e9ef; --muted:#9aa3b2;
+    --accent:#c9a45c; --accent2:#5b8bd0; --danger:#c0594f; --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); color:var(--text);
+    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:860px; margin:0 auto; padding:0 20px 80px}
+  header{padding:64px 20px 48px; text-align:center;
+    background:radial-gradient(120% 90% at 50% -10%, #1a2030 0%, var(--bg) 60%);
+    border-bottom:1px solid var(--line)}
+  .kicker{letter-spacing:.32em; text-transform:uppercase; font-size:12px; color:var(--accent); margin-bottom:18px}
+  h1{font-size:clamp(28px,5vw,44px); margin:0 0 14px; font-weight:700; letter-spacing:-.5px}
+  .hello{color:var(--accent2); font-size:15px; margin-bottom:8px; letter-spacing:.04em}
+  .sub{color:var(--muted); max-width:580px; margin:0 auto; font-size:17px}
+  section{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:28px; margin-top:24px}
+  h2{font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); margin:0 0 18px; font-weight:600}
+  .goal{font-size:19px; line-height:1.7} .goal b{color:#fff}
+  .flow{display:flex; flex-wrap:wrap; gap:10px; margin:22px 0 6px}
+  .flow .step{flex:1 1 160px; background:var(--panel2); border:1px solid var(--line);
+    border-radius:10px; padding:14px 16px; font-size:15px}
+  .flow .step span{display:block; color:var(--accent2); font-size:12px; letter-spacing:.1em;
+    text-transform:uppercase; margin-bottom:6px}
+  .note{color:var(--muted); font-size:15px; margin-top:16px}
+  ul{margin:0; padding-left:20px} li{margin:8px 0}
+  .cards{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  @media(max-width:620px){.cards{grid-template-columns:1fr}}
+  .card{background:var(--panel2); border:1px solid var(--line); border-radius:12px;
+    padding:18px; display:flex; flex-direction:column; gap:10px}
+  .card video{width:100%; border-radius:8px; background:#000; display:block}
+  .card .t{font-weight:600} .card .d{color:var(--muted); font-size:14px; flex:1}
+  .btn{display:inline-block; text-align:center; text-decoration:none; background:var(--accent);
+    color:#1a1408; font-weight:700; font-size:14px; padding:10px 14px; border-radius:8px; transition:.15s}
+  .btn:hover{filter:brightness(1.08)}
+  .yt a{display:flex; justify-content:space-between; align-items:center; gap:12px; text-decoration:none;
+    color:var(--text); background:var(--panel2); border:1px solid var(--line); border-radius:10px;
+    padding:13px 16px; margin:10px 0; transition:.15s}
+  .yt a:hover{border-color:var(--accent2)}
+  .yt .q{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:14px}
+  .yt .go{color:var(--accent2); font-size:13px; white-space:nowrap}
+  .gallery{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px}
+  .gallery a{display:block; border-radius:10px; overflow:hidden; border:1px solid var(--line); aspect-ratio:4/3}
+  .gallery img{width:100%; height:100%; object-fit:cover; display:block; transition:.2s}
+  .gallery a:hover img{transform:scale(1.05)}
+  .bad li{color:#d99} .bad li::marker{color:var(--danger)}
+  .qbox .q2{display:flex; gap:14px; align-items:flex-start; padding:14px 0; border-top:1px solid var(--line)}
+  .qbox .q2:first-child{border-top:none}
+  .qbox .n{flex:none; width:30px; height:30px; border-radius:50%; background:var(--accent2);
+    color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px}
+  .meta{display:flex; gap:24px; flex-wrap:wrap; color:var(--muted); font-size:15px; margin-top:6px}
+  .meta b{color:var(--text)}
+  footer{text-align:center; color:var(--muted); font-size:13px; margin-top:40px}
+  .pill{display:inline-block; background:var(--panel2); border:1px solid var(--line);
+    border-radius:999px; padding:4px 12px; font-size:13px; color:var(--muted); margin:3px}
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">V&amp;M Studio · LATH</div>
+  <div class="hello" id="hello"></div>
+  <h1 id="title"></h1>
+  <p class="sub" id="sub"></p>
+</header>
+
+<div class="wrap">
+  <section>
+    <h2>Задача</h2>
+    <p class="goal" id="goalLead"></p>
+    <div class="flow" id="flow"></div>
+    <p class="note" id="goalNote"></p>
+  </section>
+
+  <section>
+    <h2>Условия</h2>
+    <ul id="conditions"></ul>
+    <div class="meta" id="meta"></div>
+  </section>
+
+  <section>
+    <h2>Референсы — скачать</h2>
+    <p class="note" style="margin-top:0" id="refLead"></p>
+    <div class="cards" id="videoCards"></div>
+  </section>
+
+  <section id="gallerySec">
+    <h2>Виды Акабы — фото-референсы</h2>
+    <p class="note" style="margin-top:0">Реальные виды города. Кликните по снимку, чтобы открыть полный размер и скачать.</p>
+    <div class="gallery" id="gallery"></div>
+  </section>
+
+  <section>
+    <h2>Эталоны качества (YouTube)</h2>
+    <p class="note" style="margin-top:0">Уровень, на который равняемся:</p>
+    <div class="yt" id="yt"></div>
+  </section>
+
+  <section>
+    <h2>Чего НЕ нужно</h2>
+    <ul class="bad" id="avoid"></ul>
+  </section>
+
+  <section>
+    <h2>Вопросы к вам</h2>
+    <div class="qbox" id="questions"></div>
+    <p class="note" id="genNote"></p>
+  </section>
+
+  <footer>V&amp;M Studio · LATH · внутренний документ, не для распространения</footer>
+</div>
+
+<script>
+// ============ ДВИЖОК БРИФОВ: данные одного задания ============
+// Чтобы создать бриф новому автору — скопируйте этот объект и поменяйте поля.
+const SB = "https://pzxxoiyklqbhhsuwoghk.supabase.co/storage/v1/object/public/briefs";
+
+const BRIEF = {
+  slug: "aqaba-flythrough",              // папка в Supabase бакете briefs/
+  author: "",                            // имя автора (в шапке: «Здравствуйте, …!»)
+  title: "Подлёт к Акабе из космоса",
+  sub: "Тестовое задание. Один непрерывный кинематографичный пролёт — из космоса в живой город.",
+  goalLead: "Сделать один <b>непрерывный кинематографичный пролёт</b> (one-shot):",
+  flow: [
+    {tag:"01 · Космос", text:"Орбита → сквозь атмосферу к региону Акаба (Иордания)"},
+    {tag:"02 · Город", text:"Пролёт по улицам Акабы — живой, объёмный город"}
+  ],
+  goalNote: "Цель — <b style='color:#fff'>НЕ</b> «облёт плоской Google-карты», а киношный нырок из космоса в конкретное живое место.",
+  conditions: [
+    "<b>Длительность:</b> 30–45 сек (до 60 — потолок, не цель).",
+    "<b>Время суток:</b> тёмное / ночь с подсветкой — приветствуется.",
+    "<b>«Всё реал»:</b> гиперреализм, не должно читаться как дешёвая генерация.",
+    "<b>Технология:</b> на ваш выбор — расскажите, как бы делали."
+  ],
+  meta: [["Формат","видео"],["Соотношение","16:9"],["Качество","4K желательно"]],
+  refLead: "Наши черновики Google Earth — это образец <b style='color:#fff'>траектории</b> подлёта, не образец качества. Качество поднимаем до уровня эталонов ниже.",
+  videos: [
+    {file:"GE_podlet_traektoriya.mp4", t:"GE · Подлёт (траектория)", d:"Опорная траектория захода к точке."},
+    {file:"GE_spiral.mp4", t:"GE · Спираль 2000→500 м", d:"Снижение по спирали, выход на высоту города."},
+    {file:"ref_kandidat.mp4", t:"Видео-референс", d:"Пример настроения / результата."}
+  ],
+  photos: 10,                            // aqaba_01..10 (+ thumbs/)
+  yt: [
+    {q:"Google Earth Studio → Unreal Engine 5 transition", url:"https://www.youtube.com/results?search_query=Google+Earth+Studio+to+Unreal+Engine+5+transition", go:"Открыть ↗"},
+    {q:"Cesium for Unreal · space to city zoom", url:"https://www.youtube.com/results?search_query=Cesium+for+Unreal+Engine+space+to+city+zoom", go:"Открыть ↗"},
+    {q:"3D Gaussian Splatting · UE5 flythrough", url:"https://www.youtube.com/results?search_query=3D+Gaussian+Splatting+Unreal+Engine+5+flythrough", go:"Открыть ↗"},
+    {q:"FPV drone seamless transition space to building", url:"https://www.youtube.com/results?search_query=FPV+drone+seamless+transition+space+to+building", go:"Открыть ↗"},
+    {q:"▶ Шортс-референс (прямая ссылка)", url:"https://youtube.com/shorts/oWzrZ4VuOw0", go:"Смотреть ↗"}
+  ],
+  avoid: [
+    "Сухой облёт карты строго сверху (под 90°).",
+    "Резкая склейка между космосом и землёй.",
+    "Мультяшный рендер, «мыло» текстур у земли."
+  ],
+  questions: [
+    "Как бы вы это реализовали — инструменты, подход?",
+    "Сколько возьмёте за такой ролик?",
+    "Сроки?"
+  ],
+  genNote: 'Если работаете на генеративках — <span class="pill">Luma</span><span class="pill">Sora</span><span class="pill">Runway Gen-3</span><span class="pill">Seedance 2.0</span> — пришлём словарь точных промптов, если понадобится.'
+};
+// =============================================================
+
+const base = `${SB}/${BRIEF.slug}`;
+const $ = id => document.getElementById(id);
+const pad = n => String(n).padStart(2,"0");
+
+$("hello").textContent = BRIEF.author ? `Здравствуйте, ${BRIEF.author}!` : "Здравствуйте!";
+$("title").textContent = BRIEF.title;
+$("sub").textContent = BRIEF.sub;
+$("goalLead").innerHTML = BRIEF.goalLead;
+$("goalNote").innerHTML = BRIEF.goalNote;
+$("refLead").innerHTML = BRIEF.refLead;
+$("genNote").innerHTML = BRIEF.genNote;
+
+$("flow").innerHTML = BRIEF.flow.map(f =>
+  `<div class="step"><span>${f.tag}</span>${f.text}</div>`).join("");
+$("conditions").innerHTML = BRIEF.conditions.map(c => `<li>${c}</li>`).join("");
+$("meta").innerHTML = BRIEF.meta.map(([k,v]) => `<div>${k}: <b>${v}</b></div>`).join("");
+
+$("videoCards").innerHTML = BRIEF.videos.map(v => `
+  <div class="card">
+    <video src="${base}/${v.file}" controls preload="metadata" muted playsinline></video>
+    <div class="t">${v.t}</div><div class="d">${v.d}</div>
+    <a class="btn" href="${base}/${v.file}" download>Скачать MP4</a>
+  </div>`).join("");
+
+if (BRIEF.photos > 0) {
+  let g = "";
+  for (let i=1;i<=BRIEF.photos;i++){
+    const n = pad(i);
+    g += `<a href="${base}/aqaba_${n}.jpg" target="_blank" rel="noopener">
+      <img src="${base}/thumbs/aqaba_${n}.jpg" loading="lazy" alt="Акаба ${n}"></a>`;
+  }
+  $("gallery").innerHTML = g;
+} else { $("gallerySec").remove(); }
+
+$("yt").innerHTML = BRIEF.yt.map(y =>
+  `<a href="${y.url}" target="_blank" rel="noopener"><span class="q">${y.q}</span><span class="go">${y.go}</span></a>`).join("");
+$("avoid").innerHTML = BRIEF.avoid.map(a => `<li>${a}</li>`).join("");
+$("questions").innerHTML = BRIEF.questions.map((q,i) =>
+  `<div class="q2"><div class="n">${i+1}</div><div>${q}</div></div>`).join("");
+</script>
+</body>
+</html>
