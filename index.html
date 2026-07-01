@@ -54,6 +54,23 @@
   .gallery img{width:100%; height:100%; object-fit:cover; display:block; transition:.2s}
   .gallery a:hover img{transform:scale(1.05)}
   .bad li{color:#d99} .bad li::marker{color:var(--danger)}
+  /* Разбор полётов — аккордеон */
+  details.razbor{background:var(--panel2); border:1px solid var(--line); border-radius:12px; margin:12px 0; overflow:hidden}
+  details.razbor[open]{border-color:var(--accent2)}
+  details.razbor>summary{list-style:none; cursor:pointer; padding:16px 18px; display:flex; align-items:center; gap:14px}
+  details.razbor>summary::-webkit-details-marker{display:none}
+  .razbor .tag{flex:none; background:var(--accent); color:#1a1408; font-weight:700; font-size:13px; padding:4px 10px; border-radius:6px}
+  .razbor .teaser{flex:1; color:var(--text); font-size:15px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .razbor .ic{flex:none; display:flex; gap:6px}
+  .razbor .ic img{width:44px; height:30px; object-fit:cover; border-radius:5px; border:1px solid var(--line)}
+  .razbor .body{padding:4px 18px 20px; border-top:1px solid var(--line)}
+  .razbor .body p{margin:14px 0}
+  .razbor .body p.lead{color:#fff; font-weight:600}
+  .razbor .shots{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:16px}
+  @media(max-width:620px){.razbor .shots{grid-template-columns:1fr}}
+  .razbor .shot figcaption{color:var(--muted); font-size:13px; margin-top:6px; text-align:center}
+  .razbor .shot a{display:block; border-radius:10px; overflow:hidden; border:1px solid var(--line)}
+  .razbor .shot img{width:100%; display:block}
   .qbox .q2{display:flex; gap:14px; align-items:flex-start; padding:14px 0; border-top:1px solid var(--line)}
   .qbox .q2:first-child{border-top:none}
   .qbox .n{flex:none; width:30px; height:30px; border-radius:50%; background:var(--accent2);
@@ -116,6 +133,12 @@
     <p class="note" id="genNote"></p>
   </section>
 
+  <section id="razborSec">
+    <h2>Разбор полётов</h2>
+    <p class="note" style="margin-top:0">Замечания по присланным материалам. Нажмите, чтобы раскрыть.</p>
+    <div id="razbor"></div>
+  </section>
+
   <footer>V&amp;M Studio · LATH · внутренний документ, не для распространения</footer>
 </div>
 
@@ -166,7 +189,25 @@ const BRIEF = {
     "Сколько возьмёте за такой ролик?",
     "Сроки?"
   ],
-  genNote: 'Если работаете на генеративках — <span class="pill">Luma</span><span class="pill">Sora</span><span class="pill">Runway Gen-3</span><span class="pill">Seedance 2.0</span> — пришлём словарь точных промптов, если понадобится.'
+  genNote: 'Если работаете на генеративках — <span class="pill">Luma</span><span class="pill">Sora</span><span class="pill">Runway Gen-3</span><span class="pill">Seedance 2.0</span> — пришлём словарь точных промптов, если понадобится.',
+
+  // Разбор полётов — замечания по присланным материалам (аккордеон)
+  razbor: [
+    {
+      n: "Замечание 1",
+      teaser: "Главное — огромность зала по отношению к двум людям",
+      shots: [
+        {file:"razbor/z1_ksenia.jpg", thumb:"razbor/thumbs/z1_ksenia.jpg", cap:"Ваш кадр"},
+        {file:"razbor/z1_etalon.jpg", thumb:"razbor/thumbs/z1_etalon.jpg", cap:"Эталон — масштаб зала"}
+      ],
+      body: [
+        {lead:true, text:"Что удалось: масштаб пойман, двое маленьких у столика по центру — композиция верная."},
+        {text:"Главное, ради чего этот зал — его <b style='color:#fff'>огромность по отношению к двум сидящим людям</b>. Двое крошечных в исполинском пространстве и есть смысл кадра, а не деталь оформления. Пустые монументальные плоскости вокруг них работают на нас — их не надо заполнять."},
+        {text:"Второе, менее важное: <b>убрать золото</b>. Оно уводит в роскошь и дворец, а нужен честный монумент — бетон/камень, тёплые акценты для обжитости. Но это вторично после масштаба."},
+        {text:"Уточнение по задаче: мы <b style='color:#fff'>НЕ просили переделывать вступление к ролику Максима</b>. На экране может крутиться что угодно — контент экрана не важен. Нужно другое: <b>передать масштаб зала</b> и показать <b>умение круто перемещать камеру в этом пространстве</b>."}
+      ]
+    }
+  ]
 };
 // =============================================================
 
@@ -209,6 +250,21 @@ $("yt").innerHTML = BRIEF.yt.map(y =>
 $("avoid").innerHTML = BRIEF.avoid.map(a => `<li>${a}</li>`).join("");
 $("questions").innerHTML = BRIEF.questions.map((q,i) =>
   `<div class="q2"><div class="n">${i+1}</div><div>${q}</div></div>`).join("");
+
+if (BRIEF.razbor && BRIEF.razbor.length) {
+  $("razbor").innerHTML = BRIEF.razbor.map(r => {
+    const icons = (r.shots||[]).map(s => `<img src="${base}/${s.thumb}" alt="">`).join("");
+    const shots = (r.shots||[]).map(s =>
+      `<figure class="shot"><a href="${base}/${s.file}" target="_blank" rel="noopener">
+         <img src="${base}/${s.file}" loading="lazy" alt="${s.cap}"></a>
+         <figcaption>${s.cap}</figcaption></figure>`).join("");
+    const body = r.body.map(p => `<p class="${p.lead?'lead':''}">${p.text}</p>`).join("");
+    return `<details class="razbor">
+      <summary><span class="tag">${r.n}</span><span class="teaser">${r.teaser}</span><span class="ic">${icons}</span></summary>
+      <div class="body">${body}<div class="shots">${shots}</div></div>
+    </details>`;
+  }).join("");
+} else { $("razborSec").remove(); }
 </script>
 </body>
 </html>
